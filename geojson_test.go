@@ -185,7 +185,7 @@ func TestMultiGeometryToGeoJSON(t *testing.T) {
 	}
 }
 
-func TestToGeoJSONFunction(t *testing.T) {
+func TestGeometryInterfaceToGeoJSON(t *testing.T) {
 	tests := []struct {
 		name     string
 		geometry Geometry
@@ -228,21 +228,12 @@ func TestToGeoJSONFunction(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gj := ToGeoJSON(tt.geometry)
-			if gj == nil {
-				t.Fatal("expected non-nil result")
-			}
+			// Call ToGeoJSON through the interface
+			gj := tt.geometry.ToGeoJSON()
 			if gj.Type != tt.expected {
 				t.Errorf("expected type %s, got %s", tt.expected, gj.Type)
 			}
 		})
-	}
-}
-
-func TestToGeoJSONNil(t *testing.T) {
-	gj := ToGeoJSON(nil)
-	if gj != nil {
-		t.Errorf("expected nil for nil geometry, got %v", gj)
 	}
 }
 

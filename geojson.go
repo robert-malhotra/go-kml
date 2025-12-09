@@ -56,8 +56,8 @@ func (mg *MultiGeometry) ToGeoJSON() GeoJSONGeometry {
 	geometries := make([]GeoJSONGeometry, 0, len(mg.Geometries))
 
 	for _, geom := range mg.Geometries {
-		if g := geometryToGeoJSON(geom); g != nil {
-			geometries = append(geometries, *g)
+		if geom != nil {
+			geometries = append(geometries, geom.ToGeoJSON())
 		}
 	}
 
@@ -65,36 +65,6 @@ func (mg *MultiGeometry) ToGeoJSON() GeoJSONGeometry {
 		Type:       "GeometryCollection",
 		Geometries: geometries,
 	}
-}
-
-// ToGeoJSON converts any KML Geometry to a GeoJSON geometry.
-// Returns nil if the geometry type is not supported.
-func ToGeoJSON(g Geometry) *GeoJSONGeometry {
-	return geometryToGeoJSON(g)
-}
-
-// geometryToGeoJSON converts a Geometry interface to a GeoJSONGeometry.
-func geometryToGeoJSON(g Geometry) *GeoJSONGeometry {
-	if g == nil {
-		return nil
-	}
-
-	var result GeoJSONGeometry
-	switch geom := g.(type) {
-	case *Point:
-		result = geom.ToGeoJSON()
-	case *LineString:
-		result = geom.ToGeoJSON()
-	case *LinearRing:
-		result = geom.ToGeoJSON()
-	case *Polygon:
-		result = geom.ToGeoJSON()
-	case *MultiGeometry:
-		result = geom.ToGeoJSON()
-	default:
-		return nil
-	}
-	return &result
 }
 
 // coordToGeoJSON converts a single Coordinate to GeoJSON format [lon, lat] or [lon, lat, alt].

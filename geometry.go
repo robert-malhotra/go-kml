@@ -21,6 +21,7 @@ const (
 // Geometry is an interface implemented by all geometry types.
 type Geometry interface {
 	geometryType() string
+	ToGeoJSON() GeoJSONGeometry
 }
 
 // Point represents a single geographic location.
